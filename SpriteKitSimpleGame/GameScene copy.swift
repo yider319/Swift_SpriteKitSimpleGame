@@ -31,6 +31,7 @@ func playBackgroundMusic(filename: String) {
 }
 
 
+
 import SpriteKit
 
 
@@ -71,141 +72,65 @@ extension CGPoint {
 struct PhysicsCategory {
     static let None      : UInt32 = 0
     static let All       : UInt32 = UInt32.max
-    static let Bullet   : UInt32 = 0b00001  // 1
-    static let Carrot   : UInt32 = 0b00010  // 2
-    static let Bunny     : UInt32 = 0b00011   // 3
-    static let Gorilla     : UInt32 = 0b00100   // 4
-    static let Rhino_back     : UInt32 = 0b00101   // 5
-    static let Rhino_front     : UInt32 = 0b00110   // 6
+    static let Bullet   : UInt32 = 0b00001
+    static let Carrot   : UInt32 = 0b00010
+    static let Bunny     : UInt32 = 0b00011
+    static let Gorilla     : UInt32 = 0b00100
+    static let Rhino_back     : UInt32 = 0b00101
+    static let Rhino_front     : UInt32 = 0b00110
 }
 
-
 class GameScene: SKScene, SKPhysicsContactDelegate{
-    // Flag indicating whether we've setup the camera system yet.
-    var isCreated: Bool = false
-    
-    // The root node of your game world. Attach game entities
-    // (player, enemies, &c.) to here.
-    var world: SKNode?
-    // The root node of our UI. Attach control buttons & state
-    // indicators here.
-    var overlay: SKNode?
-    // The camera. Move this node to change what parts of the world are visible.
-    var camera: SKNode?
-    
-    // 1 player life
-    var playerlife = 5
-    
-    // 2 monster rhino life
-    var rhinolife = 2
-    
+    // 1
     let playerheart_1 = SKSpriteNode(imageNamed: "heart")
     let playerheart_2 = SKSpriteNode(imageNamed: "heart")
     let playerheart_3 = SKSpriteNode(imageNamed: "heart")
-    let playerheart_4 = SKSpriteNode(imageNamed: "heart")
-    let playerheart_5 = SKSpriteNode(imageNamed: "heart")
     
+    var playerlife = 3
+    var rhinolife = 2
+
     
     override func didMoveToView(view: SKView) {
+        //playBackgroundMusic("background-music-aac.caf")
+        playBackgroundMusic("cautious-path.mp3")
         
+        // 2
         backgroundColor = SKColor.whiteColor()
-
-        if !isCreated {
-            isCreated = true
-            
-            // Camera setup
-            self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-            self.world = SKNode()
-            self.world?.name = "world"
-            addChild(self.world!)
-            self.camera = SKNode()
-            self.camera?.name = "camera"
-            self.world?.addChild(self.camera!)
-            
-            // UI setup
-            self.overlay = SKNode()
-            self.overlay?.zPosition = 10
-            self.overlay?.name = "overlay"
-            addChild(self.overlay!)
-        }
+        // 3
+        playerheart_1.position = CGPoint(x: size.width * 0.86, y: size.height * 0.94)
+        playerheart_1.size = CGSize(width: 30, height: 30)
+        playerheart_2.position = CGPoint(x: size.width * 0.90, y: size.height * 0.94)
+        playerheart_2.size = CGSize(width: 30, height: 30)
+        playerheart_3.position = CGPoint(x: size.width * 0.94, y: size.height * 0.94)
+        playerheart_3.size = CGSize(width: 30, height: 30)
+        // 4
+        addChild(playerheart_1)
+        addChild(playerheart_2)
+        addChild(playerheart_3)
         
-        // add background to "world"
-        let bg = SKSpriteNode(imageNamed: "forest")
-        
-        playerheart_1.position = CGPoint(x: size.width * 0.25, y: size.height * 0.44)
-        playerheart_1.size = CGSize(width: 35, height: 35)
-        
-        playerheart_2.position = CGPoint(x: size.width * 0.3, y: size.height * 0.44)
-        playerheart_2.size = CGSize(width: 35, height: 35)
-        
-        playerheart_3.position = CGPoint(x: size.width * 0.35, y: size.height * 0.44)
-        playerheart_3.size = CGSize(width: 35, height: 35)
-        
-        playerheart_4.position = CGPoint(x: size.width * 0.4, y: size.height * 0.44)
-        playerheart_4.size = CGSize(width: 35, height: 35)
-        
-        playerheart_5.position = CGPoint(x: size.width * 0.45, y: size.height * 0.44)
-        playerheart_5.size = CGSize(width: 35, height: 35)
-        
-        self.overlay?.addChild(playerheart_1)
-        self.overlay?.addChild(playerheart_2)
-        self.overlay?.addChild(playerheart_3)
-        self.overlay?.addChild(playerheart_4)
-        self.overlay?.addChild(playerheart_5)
-        
-        bg.position = CGPoint(x: frame.size.width * 0.0, y: frame.size.width * 0.2)
-        
-        bg.size = CGSize(width: 680, height: 650)
-        
-        self.world?.addChild(bg)
-        
-        
-        // ?? which world?
         physicsWorld.gravity = CGVectorMake(0,0)
         physicsWorld.contactDelegate = self
-        
 
-        self.world?.runAction(SKAction.repeatActionForever(
+
+        runAction(SKAction.repeatActionForever(
             SKAction.sequence([
-                SKAction.waitForDuration(1),
                 SKAction.runBlock(addMonster1),
-                SKAction.waitForDuration(5),
                 SKAction.runBlock(addMonster2),
-                SKAction.waitForDuration(5.0)
-            ])
-        ))
+                SKAction.waitForDuration(3.0)
+                ])
+            ))
 
-        
-        self.world?.runAction(SKAction.repeatActionForever(
+
+        runAction(SKAction.repeatActionForever(
             SKAction.sequence([
-                SKAction.waitForDuration(15),
                 SKAction.runBlock(addMonster3),
-                SKAction.waitForDuration(5),
-                SKAction.runBlock(addMonster4),
                 SKAction.waitForDuration(5.0)
-            ])
-        ))
+                ])
+            ))
 
-
-        
-        // moving camera
-        //self.camera?.runAction(SKAction.moveTo(CGPointMake(100, 50), duration: 1.0))
-        
     }
     
     
-    override func didSimulatePhysics() {
-        if self.camera != nil {
-            self.centerOnNode(self.camera!)
-        }
-    }
-    
-    
-    func centerOnNode(node: SKNode) {
-        let cameraPositionInScene: CGPoint = node.scene!.convertPoint(node.position, fromNode: node.parent!)
-        
-        node.parent!.position = CGPoint(x:node.parent!.position.x - cameraPositionInScene.x, y:node.parent!.position.y - cameraPositionInScene.y)
-    }
     
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
@@ -214,26 +139,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func random(#min: CGFloat, max: CGFloat) -> CGFloat {
         return random() * (max - min) + min
     }
-
-    /////
-    // rescale the physics shape part 1
+    
+/////
+    // rescale the physics body part 1
     func offset(node: SKSpriteNode, isX: Bool)->CGFloat {
         return isX ? node.frame.size.width * node.anchorPoint.x : node.frame.size.height * node.anchorPoint.y
     }
     
-    // rescale the physics shape part 2
+    // rescale the physics body part 2
     func AddLineToPoint(path: CGMutablePath!, x: CGFloat, y: CGFloat, node: SKSpriteNode) {
         CGPathAddLineToPoint(path, nil, (x * 1/2.2) - offset(node, isX: true), (y * 1/2.2) - offset(node, isX: false))
     }
     
-    // rescale the physics shape part 3
+    // rescale the physics body part 3
     func MoveToPoint(path: CGMutablePath!, x: CGFloat, y: CGFloat, node: SKSpriteNode) {
         CGPathMoveToPoint(path, nil, (x * 1/2.2) - offset(node, isX: true), (y * 1/2.2) - offset(node, isX: false))
     }
-    /////
+/////
     
     
-    //
     func addMonster1() {
         
         // Create Boss Bunny sprite
@@ -242,7 +166,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // Create attack from Boss Bunny sprite
         let carrot = SKSpriteNode(imageNamed: "carrot")
-        carrot.size = CGSize(width: 15, height: 40)
+        carrot.size = CGSize(width: 30, height: 50)
         
         // give physics body to Boss Bunny
         //bunny.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(10,60))
@@ -257,7 +181,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         AddLineToPoint(path,  x: 121, y: 124, node: bunny)
         CGPathCloseSubpath(path)
         bunny.physicsBody = SKPhysicsBody(polygonFromPath: path)
-        
+
         //
         bunny.physicsBody?.dynamic = true
         bunny.physicsBody?.categoryBitMask = PhysicsCategory.Bunny
@@ -265,27 +189,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bunny.physicsBody?.collisionBitMask = PhysicsCategory.None
         
         // Determine where to spawn the Bunny along the Y axis
-        //        let actualY = random(min: bunny.size.height/2, max: size.height - bunny.size.height/2)
-        let actualY = CGFloat(-50)
+//        let actualY = random(min: bunny.size.height/2, max: size.height - bunny.size.height/2)
+        let actualY = CGFloat(100)
         
         // Position the bunny slightly off-screen along the right edge,
         // and along a random position along the Y axis as calculated above
         // bunny.position = CGPoint(x: size.width - bunny.size.width/2, y: actualY)
-        bunny.position = CGPoint(x: size.width*1/5, y: actualY)
+        bunny.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         
         // Add the carrot to the scene
         carrot.position = bunny.position
         
         // give physicsbody to carrot
-        carrot.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(10,40))
+        carrot.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(10,60))
         carrot.physicsBody?.dynamic = true
         carrot.physicsBody?.categoryBitMask = PhysicsCategory.Carrot
         carrot.physicsBody?.contactTestBitMask = PhysicsCategory.Bullet // will test with Bullet
         carrot.physicsBody?.collisionBitMask = PhysicsCategory.None
         
         
-        self.world?.addChild(bunny)
-        self.world?.addChild(carrot)
+        addChild(bunny)
+        addChild(carrot)
         
         // Determine speed of the carrot
         var actualZoom = random(min: CGFloat(4.5), max: CGFloat(6.0))
@@ -298,44 +222,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         
         // Create the actions
-        //        let actionMove = SKAction.moveTo(CGPoint(x: -bunny.size.width/2, y: actualY), duration: NSTimeInterval(actualDuration))
+//        let actionMove = SKAction.moveTo(CGPoint(x: -bunny.size.width/2, y: actualY), duration: NSTimeInterval(actualDuration))
         let actionMoveDone = SKAction.removeFromParent()
         
         // If the carrot reaches to the destination successfully -> Game Over
-        //        let loseAction = SKAction.runBlock() {
-        //            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-        //            let gameOverScene = GameOverScene(size: self.size, won: false)
-        //            self.view?.presentScene(gameOverScene, transition: reveal)
-        //        }
+//        let loseAction = SKAction.runBlock() {
+//            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+//            let gameOverScene = GameOverScene(size: self.size, won: false)
+//            self.view?.presentScene(gameOverScene, transition: reveal)
+//        }
         
-        //        carrot.runAction(SKAction.sequence([actionMove, loseAction, actionMoveDone]))
-        
+//        carrot.runAction(SKAction.sequence([actionMove, loseAction, actionMoveDone]))
+
         // player life reduced
         let loseHeart = SKAction.runBlock() {
             self.playerlife--
-            println(self.playerlife)
-            
-            if (self.playerlife == 4) {
-                self.playerheart_1.runAction(actionMoveDone)
-            }
-            
-            if (self.playerlife == 3) {
-                self.playerheart_2.runAction(actionMoveDone)
-            }
             
             if (self.playerlife == 2) {
                 self.playerheart_3.runAction(actionMoveDone)
             }
             
             if (self.playerlife == 1) {
-                self.playerheart_4.runAction(actionMoveDone)
+                self.playerheart_2.runAction(actionMoveDone)
             }
             
             if (self.playerlife == 0) {
-                self.playerheart_5.runAction(actionMoveDone)
+                self.playerheart_1.runAction(actionMoveDone)
             }
         }
-
         
         
         // player got hit screen
@@ -348,13 +262,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let newdes = bunny.position
         let actionPresent = SKAction.moveTo(newdes, duration: 3.0) // if duration>3, bunny collides with bunny -> Problem of collision prediction algorithm?
         bunny.runAction(SKAction.sequence([actionPresent, actionMoveDone]))
-        //bunny.runAction(actionPresent)
         
         carrot.runAction(SKAction.sequence([actionAttack, loseHeart , loseHeartAnimation, actionMoveDone]))
     }
-
     
-    //
+    
     func addMonster2() {
         
         // Create Gorilla sprite
@@ -368,17 +280,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // give physics body to Gorilla
         gorilla.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(60,60))
         gorilla.physicsBody?.dynamic = true
-        gorilla.physicsBody?.categoryBitMask = PhysicsCategory.Gorilla
+        gorilla.physicsBody?.categoryBitMask = PhysicsCategory.Bunny
         gorilla.physicsBody?.contactTestBitMask = PhysicsCategory.Bullet // will test with Bullet
         gorilla.physicsBody?.collisionBitMask = PhysicsCategory.None
         
         // Determine where to spawn the Gorilla along the Y axis
         //        let actualY = random(min: bunny.size.height/2, max: size.height - bunny.size.height/2)
-        let actualY = CGFloat(-100)
+        let actualY = CGFloat(200)
         
         // Position the bunny slightly off-screen along the right edge,
         // and along a random position along the Y axis as calculated above
-        gorilla.position = CGPoint(x: -size.width*0, y: actualY)
+        gorilla.position = CGPoint(x: size.width/4, y: actualY)
         //gorilla.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         
         // Add the banana to the scene
@@ -392,8 +304,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         banana.physicsBody?.collisionBitMask = PhysicsCategory.None
         
         
-        self.world?.addChild(gorilla)
-        self.world?.addChild(banana)
+        addChild(gorilla)
+        addChild(banana)
         
         // Determine speed of the banana
         var actualZoom = random(min: CGFloat(4.5), max: CGFloat(6.0))
@@ -433,26 +345,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // player life reduced
         let loseHeart = SKAction.runBlock() {
             self.playerlife--
-            println(self.playerlife)
-            
-            if (self.playerlife == 4) {
-                self.playerheart_1.runAction(actionMoveDone)
-            }
-            
-            if (self.playerlife == 3) {
-                self.playerheart_2.runAction(actionMoveDone)
-            }
             
             if (self.playerlife == 2) {
                 self.playerheart_3.runAction(actionMoveDone)
             }
             
             if (self.playerlife == 1) {
-                self.playerheart_4.runAction(actionMoveDone)
+                self.playerheart_2.runAction(actionMoveDone)
             }
             
             if (self.playerlife == 0) {
-                self.playerheart_5.runAction(actionMoveDone)
+                self.playerheart_1.runAction(actionMoveDone)
             }
         }
         
@@ -470,7 +373,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         banana.runAction(SKAction.sequence([actionAttack, loseHeart, loseHeartAnimation, actionMoveDone]))
     }
     
-    //
+    
     func addMonster3() {
         
         // Create Rhino sprite
@@ -486,114 +389,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // Determine where to spawn the Rhino along the Y axis
         //        let actualY = random(min: bunny.size.height/2, max: size.height - bunny.size.height/2)
-        let actualY = CGFloat(-100)
+        let actualY = CGFloat(150)
         
         // Position the Rhino slightly off-screen along the right edge,
         // and along a random position along the Y axis as calculated above
-        rhino_back.position = CGPoint(x: -size.width*2/5, y: actualY)
+        rhino_back.position = CGPoint(x: size.width*3/4, y: actualY)
         // rhino_back.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         
-        self.world?.addChild(rhino_back)
-        
+        addChild(rhino_back)
+
         let actionMoveDone = SKAction.removeFromParent()
         
         // show the rhino
-        let actionPresent = SKAction.waitForDuration(3.0) // if duration>3, bunny collides with bunny -> Problem of collision prediction algorithm?
+        let newdes = rhino_back.position
+        let actionPresent = SKAction.moveTo(newdes, duration: 3.0) // if duration>3, bunny collides with bunny -> Problem of collision prediction algorithm?
         rhino_back.runAction(SKAction.sequence([actionPresent, actionMoveDone]))
         
-    }
-    
-    //
-    func addMonster4() {
-        
-        // Create Boxing Kangaroo sprite
-        let kangaroo = SKSpriteNode(imageNamed: "kangaroo-boxing")
-        kangaroo.size = CGSize(width: 60, height: 90)
-        
-        // give physics body to Boxing Kangaroo
-        kangaroo.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(35,65))
-        kangaroo.physicsBody?.dynamic = true
-        kangaroo.physicsBody?.categoryBitMask = PhysicsCategory.Bunny
-        kangaroo.physicsBody?.contactTestBitMask = PhysicsCategory.Bullet // will test with Bullet
-        kangaroo.physicsBody?.collisionBitMask = PhysicsCategory.None
-        
-        // Determine where to spawn the Monster along the Y axis
-        //        let actualY = random(min: bunny.size.height/2, max: size.height - bunny.size.height/2)
-        let actualY = CGFloat(-50)
-        
-        // Position the bunny slightly off-screen along the right edge,
-        // and along a random position along the Y axis as calculated above
-        // bunny.position = CGPoint(x: size.width - bunny.size.width/2, y: actualY)
-        kangaroo.position = CGPoint(x: -size.width*1/5, y: actualY)
-        
-        self.world?.addChild(kangaroo)
-        
-        // Determine speed of the kangaroo
-        var actualZoom = random(min: CGFloat(4.5), max: CGFloat(6.0))
-        let actionAttack = SKAction.scaleTo(actualZoom, duration: 2)
-        
-        // Kangaroo stay still for 1 second
-        let actionStandby = SKAction.waitForDuration(1)
-
-        // animate the kangaroo (zoom), attack from Boxing Kangaroo sprite
-        kangaroo.runAction(SKAction.sequence([actionStandby, actionAttack, actionStandby]))
-        
-        // Determine jump speed of the kangaroo
-        let actualHeight = actualY + CGFloat(1000)
-        let actionJumpUp = SKAction.moveToY(actualHeight, duration:1)
-        let actualGround = actualY - CGFloat(100)
-        let actionJumpDown = SKAction.moveToY(actualGround, duration:1)
-        
-        // Create the actions
-        //        let actionMove = SKAction.moveTo(CGPoint(x: -bunny.size.width/2, y: actualY), duration: NSTimeInterval(actualDuration))
-        let actionMoveDone = SKAction.removeFromParent()
-        
-
-        // player life reduced
-        let loseHeart = SKAction.runBlock() {
-            self.playerlife--
-            println(self.playerlife)
-            
-            if (self.playerlife == 4) {
-                self.playerheart_1.runAction(actionMoveDone)
-            }
-            
-            if (self.playerlife == 3) {
-                self.playerheart_2.runAction(actionMoveDone)
-            }
-            
-            if (self.playerlife == 2) {
-                self.playerheart_3.runAction(actionMoveDone)
-            }
-            
-            if (self.playerlife == 1) {
-                self.playerheart_4.runAction(actionMoveDone)
-            }
-            
-            if (self.playerlife == 0) {
-                self.playerheart_5.runAction(actionMoveDone)
-            }
         }
-
-
-        // player got hit screen
-        let loseHeartAnimation = SKAction.runBlock() {
-            self.player_hit(kangaroo)
-            
-        }
-        
-        // moving camera; Kangaroo Uppercut
-        let actionCameraUp = SKAction.moveToY(CGFloat(250), duration:0.2)
-        let actionCameraDown = SKAction.moveToY(CGFloat(0), duration:0.4)
-        
-        let actionUppercut = SKAction.runBlock() {
-            self.camera?.runAction(SKAction.sequence([actionCameraUp, actionCameraDown]))
-        }
-        
-        kangaroo.runAction(SKAction.sequence([actionStandby, actionJumpUp, actionJumpDown, actionStandby, loseHeartAnimation, actionUppercut, loseHeart, actionMoveDone]))
-    }
     
-    
+
     func player_hit(banana:SKSpriteNode) {
         // Sound
         runAction(SKAction.playSoundFileNamed("Glass-break.wav", waitForCompletion: false))
@@ -610,7 +424,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         println("Player got hitted")
         
-        self.overlay?.addChild(got_hit)
+        addChild(got_hit)
         
         let actionMove = SKAction.moveTo(got_hit.position, duration: 0.6)
         
@@ -618,13 +432,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         got_hit.runAction(SKAction.sequence([actionMove, actionMoveDone]))
         
-        
+
     }
     
     
+    
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
-        // Sound of gun shoot
-        runAction(SKAction.playSoundFileNamed("gun.mp3", waitForCompletion: false))
+        // Sound of throwing banana
+        runAction(SKAction.playSoundFileNamed("throw_sound.mp3", waitForCompletion: false))
         
         // 1 - Choose one of the touches to work with
         let touch = touches.first as! UITouch
@@ -645,10 +460,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bullet.physicsBody?.contactTestBitMask = PhysicsCategory.Bunny // bullet will check collision with Boss Bunny
         bullet.physicsBody?.collisionBitMask = PhysicsCategory.None
         bullet.physicsBody?.usesPreciseCollisionDetection = true
+
+        
+        // Determine rotational speed of the bullet
+        //let actualRot = random(min: CGFloat(-50.0), max: CGFloat(-1.0))
+        //let action = SKAction.rotateByAngle(actualRot, duration:1)
+        
+        //bullet.runAction(SKAction.repeatActionForever(action))
+        
+        // 3 - Determine offset of location to bullet
+        //let offset = touchLocation - bullet.position
+        
+        // 4 - Bail out if you are shooting down or backwards
+        //        if (offset.x < 0) { return }
+        
+        // 5 - OK to add now - you've double checked position
         
         
-        self.world?.addChild(bullet)
+        addChild(bullet)
         
+        // 6 - Get the direction of where to shoot
+        //let direction = offset.normalized()
+        
+        // 7 - Make it shoot far enough to be guaranteed off screen
+        //let shootAmount = direction * 1000
+        
+        // 8 - Add the shoot amount to the current position
+        //let realDest = shootAmount + bullet.position
         let realDest = bullet.position
         
         // 9 - Create the actions
@@ -656,25 +494,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let actionMoveDone = SKAction.removeFromParent()
         bullet.runAction(SKAction.sequence([actionMove, actionMoveDone]))
         
-        
-        // Load picture of Gun
-        let gun = SKSpriteNode(imageNamed: "RHG")
+    }
     
-        gun.size = CGSize(width: 120, height: 120)
+    func bulletDidCollideWithCarrot(bullet:SKSpriteNode, carrot:SKSpriteNode) {
+        // Sound of bullet hitting with carrot
+        runAction(SKAction.playSoundFileNamed("Squish.mp3", waitForCompletion: false))
         
-        gun.position = CGPointMake(self.frame.size.width*3/7, -self.frame.size.height/2)
-        gun.position.y = gun.position.y + CGFloat(50)
-        
-        self.overlay?.addChild(gun)
-
-        let actionGun = SKAction.waitForDuration(0.6)
-        gun.runAction(SKAction.sequence([actionGun, actionMoveDone]))
-
+        println("Hit Carrot")
+        bullet.removeFromParent()
+        carrot.removeFromParent()
     }
     
     
+    
     func bulletDidCollideWithBunny(bullet:SKSpriteNode, bunny:SKSpriteNode) {
-        // Sound of hitting Bunny
+        // Sound of banana hitting Boss Bunny
         runAction(SKAction.playSoundFileNamed("Pain_Sound.mp3", waitForCompletion: false))
         
         // Load picture of Bunny got hitted
@@ -691,13 +525,56 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bunny.removeFromParent()
         ///
         
-        self.world?.addChild(shocked_bunny)
+        addChild(shocked_bunny)
         
-        let actionMove = SKAction.waitForDuration(0.6)
+        
+        let newdes = shocked_bunny.position
+        let actionMove = SKAction.moveTo(newdes, duration: 0.6)
         
         let actionMoveDone = SKAction.removeFromParent()
         
         shocked_bunny.runAction(SKAction.sequence([actionMove, actionMoveDone]))
+        
+/*
+        // Hit 2 times to win
+        bunnyhitted++
+        if (bunnyhitted > 1) {
+            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let gameOverScene = GameOverScene(size: self.size, won: true)
+            self.view?.presentScene(gameOverScene, transition: reveal)
+        }
+*/
+    }
+    
+    
+    
+    func bulletDidCollideWithGorilla(bullet:SKSpriteNode, gorilla:SKSpriteNode) {
+        // Sound of banana hitting Boss Bunny
+        runAction(SKAction.playSoundFileNamed("Pain_Sound.mp3", waitForCompletion: false))
+        
+        // Load picture of gorilla got hitted
+        let shocked_gorilla = SKSpriteNode(imageNamed: "shocked_bunny")
+        
+        // rescale the picture
+        shocked_gorilla.size = CGSize(width: 80, height: 80)
+        
+        shocked_gorilla.position = gorilla.position
+        
+        ///
+        println("Hit Gorilla")
+        bullet.removeFromParent()
+        gorilla.removeFromParent()
+        ///
+        
+        addChild(shocked_gorilla)
+        
+        
+        let newdes = shocked_gorilla.position
+        let actionMove = SKAction.moveTo(newdes, duration: 0.6)
+        
+        let actionMoveDone = SKAction.removeFromParent()
+        
+        shocked_gorilla.runAction(SKAction.sequence([actionMove, actionMoveDone]))
         
         /*
         // Hit 2 times to win
@@ -710,67 +587,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         */
     }
     
-    func bulletDidCollideWithCarrot(bullet:SKSpriteNode, carrot:SKSpriteNode) {
-        // Sound of bullet hitting with carrot
-        // runAction(SKAction.playSoundFileNamed("Squish.mp3", waitForCompletion: false))
-        
-        println("Hit Carrot")
-        bullet.removeFromParent()
-        carrot.removeFromParent()
-        
-        // Load picture of Boom
-        let boom = SKSpriteNode(imageNamed: "boom")
-        
-        // rescale the picture
-        boom.size = CGSize(width: 80, height: 80)
-        
-        boom.position = carrot.position
-        
-        self.world?.addChild(boom)
-        
-        let actionMove = SKAction.waitForDuration(0.4)
-        
-        let actionMoveDone = SKAction.removeFromParent()
-        
-        boom.runAction(SKAction.sequence([actionMove, actionMoveDone]))
-    }
     
-    func bulletDidCollideWithGorilla(bullet:SKSpriteNode, gorilla:SKSpriteNode) {
-        // Sound of banana hitting Boss Bunny
-        runAction(SKAction.playSoundFileNamed("gorilla_hit.wav", waitForCompletion: false))
-        
-        // Load picture of gorilla got hitted
-        let shocked_gorilla = SKSpriteNode(imageNamed: "gorilla_shocked")
-        
-        // rescale the picture
-        shocked_gorilla.size = CGSize(width: 120, height: 120)
-        
-        shocked_gorilla.position = gorilla.position
-        
-        ///
-        println("Hit Gorilla")
-        bullet.removeFromParent()
-        gorilla.removeFromParent()
-        ///
-        
-        self.world?.addChild(shocked_gorilla)
-        
-        
-        let newdes = shocked_gorilla.position
-        let actionMove = SKAction.moveTo(newdes, duration: 0.6)
-        
-        let actionMoveDone = SKAction.removeFromParent()
-        
-        shocked_gorilla.runAction(SKAction.sequence([actionMove, actionMoveDone]))
-    }
+    
     
     
     func bulletDidCollideWithRhino_back(bullet:SKSpriteNode, rhino_back:SKSpriteNode) {
         // Sound of bullet hitting with Rhino_back
         runAction(SKAction.playSoundFileNamed("DINOSAUR.WAV", waitForCompletion: false))
         
-        // give rhino life up to 3
-        self.rhinolife = 3
+        // give rhino life up to 2
+        self.rhinolife = 2
         
         // Create attack from Rhino sprite
         let rhino_front = SKSpriteNode(imageNamed: "rhino-2")
@@ -778,8 +604,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // Add the Rhino_attack to the scene
         rhino_front.position = rhino_back.position
-        rhino_front.position = rhino_front.position + CGPointMake(self.frame.size.width/2, self.frame.size.height/2)
-        //not sure why?
         
         // remove rhino_back
         println("Hit Rhino_back")
@@ -789,14 +613,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // give physicsbody to rhino_front
         rhino_front.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(50,60))
         rhino_front.physicsBody?.dynamic = true
-        
+
         /////////////
         rhino_front.physicsBody?.categoryBitMask = PhysicsCategory.Rhino_front
         rhino_front.physicsBody?.contactTestBitMask = PhysicsCategory.Bullet // will test with Bullet
         rhino_front.physicsBody?.collisionBitMask = PhysicsCategory.None
         
         
-        self.world?.addChild(rhino_front)
+        addChild(rhino_front)
         
         let actionMoveDone = SKAction.removeFromParent()
         
@@ -813,34 +637,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // player life reduced
         let loseHeart = SKAction.runBlock() {
             self.playerlife--
-            println(self.playerlife)
-            
-            if (self.playerlife == 4) {
-                self.playerheart_1.runAction(actionMoveDone)
-            }
-            
-            if (self.playerlife == 3) {
-                self.playerheart_2.runAction(actionMoveDone)
-            }
             
             if (self.playerlife == 2) {
                 self.playerheart_3.runAction(actionMoveDone)
             }
             
             if (self.playerlife == 1) {
-                self.playerheart_4.runAction(actionMoveDone)
+                self.playerheart_2.runAction(actionMoveDone)
             }
             
             if (self.playerlife == 0) {
-                self.playerheart_5.runAction(actionMoveDone)
+                self.playerheart_1.runAction(actionMoveDone)
             }
         }
         
+
         // player got hit screen
         let loseHeartAnimation = SKAction.runBlock() {
             self.player_hit(rhino_front)
         }
-        
+
         // Determine speed of the rhino_front
         var actualZoom = random(min: CGFloat(3.5), max: CGFloat(4.5))
         let actionAttack = SKAction.scaleTo(actualZoom, duration: 3)
@@ -850,102 +666,149 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
     }
     
+        
     func bulletDidCollideWithRhino_front(bullet:SKSpriteNode, rhino_front:SKSpriteNode) {
+            // Sound of bullet hitting with Rhino_front
+            runAction(SKAction.playSoundFileNamed("Squish.mp3", waitForCompletion: false))
+            self.rhinolife--
+            
+            let actionMoveDone = SKAction.removeFromParent()
+            
+            println("Hit Rhino_front")
+            bullet.removeFromParent()
         
-        // Sound of gun hit
-        runAction(SKAction.playSoundFileNamed("gun_hit.mp3", waitForCompletion: false))
-        
-        self.rhinolife--
-        
-        let actionMoveDone = SKAction.removeFromParent()
-        
-        println("Hit Rhino_front")
-        bullet.removeFromParent()
-        
-        if (self.rhinolife == 0) {
-            rhino_front.removeFromParent()
-        }
+            if (self.rhinolife == 0) {
+                rhino_front.removeFromParent()
+            }
     }
     
     
-    
+
     func didBeginContact(contact: SKPhysicsContact) {
         // sort out the index of collision bodies
         var firstBody: SKPhysicsBody
         var secondBody: SKPhysicsBody
-        
-        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+/*        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
             firstBody = contact.bodyA
             secondBody = contact.bodyB
         } else {
             firstBody = contact.bodyB
             secondBody = contact.bodyA
         }
+*/
+        let contactMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         
+        
+        switch contactMask {
+        case PhysicsCategory.Carrot | PhysicsCategory.Bullet :
+            println("Bullet hit Carrot\n")
+            
+            if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+                firstBody = contact.bodyA
+                secondBody = contact.bodyB
+            } else {
+                firstBody = contact.bodyB
+                secondBody = contact.bodyA
+            }
+            
+            if ( secondBody.node == nil ) {
+                break
+            }
+            
+            bulletDidCollideWithCarrot(firstBody.node as! SKSpriteNode, bullet: secondBody.node as! SKSpriteNode)
+            
+            
+        case PhysicsCategory.Bunny | PhysicsCategory.Bullet :
+            println("Bullet hit Bunny\n")
+            
+            if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+                firstBody = contact.bodyA
+                secondBody = contact.bodyB
+            } else {
+                firstBody = contact.bodyB
+                secondBody = contact.bodyA
+            }
+            
+            if ( firstBody.node == nil ) {
+                break
+            }
+            bulletDidCollideWithBunny(firstBody.node as! SKSpriteNode, bunny: secondBody.node as! SKSpriteNode)
+            
+            
+        case PhysicsCategory.Gorilla | PhysicsCategory.Bullet :
+            println("Bullet hit Gorilla\n")
+            
+            if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+                firstBody = contact.bodyA
+                secondBody = contact.bodyB
+            } else {
+                firstBody = contact.bodyB
+                secondBody = contact.bodyA
+            }
+            
+            if ( firstBody.node == nil ) {
+                break
+            }
+            bulletDidCollideWithGorilla(firstBody.node as! SKSpriteNode, gorilla: secondBody.node as! SKSpriteNode)
+            
+            
+        case PhysicsCategory.Rhino_back | PhysicsCategory.Bullet :
+            println("Bullet hit Rhino_back\n")
+            
+            if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+                firstBody = contact.bodyA
+                secondBody = contact.bodyB
+            } else {
+                firstBody = contact.bodyB
+                secondBody = contact.bodyA
+            }
+            
+            if ( firstBody.node == nil ) {
+                break
+            }
+            
+            bulletDidCollideWithRhino_back(firstBody.node as! SKSpriteNode, rhino_back: secondBody.node as! SKSpriteNode)
+            
+        case PhysicsCategory.Rhino_front | PhysicsCategory.Bullet :
+            println("Bullet hit Rhino_front\n")
+            
+            if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+                firstBody = contact.bodyA
+                secondBody = contact.bodyB
+            } else {
+                firstBody = contact.bodyB
+                secondBody = contact.bodyA
+            }
+            
+            if ( firstBody.node == nil ) {
+                break
+            }
+            
+            bulletDidCollideWithRhino_front(firstBody.node as! SKSpriteNode, rhino_front: secondBody.node as! SKSpriteNode)
+            
+        default:
+            println()
+            
+        }
+/*
         // debug to see the index
         println(firstBody.categoryBitMask)
         println(secondBody.categoryBitMask)
         
-        // only if the first one is a "bullet," then we are sure it is a collision
-        if (firstBody.categoryBitMask == 1) {
-            
-            let contactMask = secondBody.categoryBitMask
-            println(contactMask)
-            
-            switch contactMask {
-            case PhysicsCategory.Carrot :
-                println("Bullet hit Carrot\n")
-                
-                if ( firstBody.node == nil ) {
-                    break
-                }
-                
-                bulletDidCollideWithCarrot(firstBody.node as! SKSpriteNode, carrot: secondBody.node as! SKSpriteNode)
-                
-                
-            case PhysicsCategory.Bunny :
-                println("Bullet hit Bunny\n")
-                
-                if ( firstBody.node == nil ) {
-                    break
-                }
-                bulletDidCollideWithBunny(firstBody.node as! SKSpriteNode, bunny: secondBody.node as! SKSpriteNode)
-                
-                
-            case PhysicsCategory.Gorilla :
-                println("Bullet hit Gorilla\n")
-                
-                if ( firstBody.node == nil ) {
-                    break
-                }
-                bulletDidCollideWithGorilla(firstBody.node as! SKSpriteNode, gorilla: secondBody.node as! SKSpriteNode)
-                
-                
-            case PhysicsCategory.Rhino_back :
-                println("Bullet hit Rhino_back\n")
-                
-                if ( firstBody.node == nil ) {
-                    break
-                }
-                
-                bulletDidCollideWithRhino_back(firstBody.node as! SKSpriteNode, rhino_back: secondBody.node as! SKSpriteNode)
-                
-            case PhysicsCategory.Rhino_front :
-                println("Bullet hit Rhino_front\n")
-                
-                if ( firstBody.node == nil ) {
-                    break
-                }
-                
-                bulletDidCollideWithRhino_front(firstBody.node as! SKSpriteNode, rhino_front: secondBody.node as! SKSpriteNode)
-                
-                
-            default:
-                println()
-            }
-            
+        
+        // if bullet hits carrot
+        if ((firstBody.categoryBitMask == PhysicsCategory.Carrot ) &&
+            (secondBody.categoryBitMask == PhysicsCategory.Bullet )) {
+                bulletDidCollideWithCarrot(firstBody.node as! SKSpriteNode, bullet: secondBody.node as! SKSpriteNode)
         }
-    
-}
-    
+        
+        // if bullet hits Boss Bunny
+        if ((firstBody.categoryBitMask == PhysicsCategory.Bullet ) &&
+            (secondBody.categoryBitMask == PhysicsCategory.Bunny) ) {
+                
+            bulletDidCollideWithBunny(firstBody.node as! SKSpriteNode, bunny: secondBody.node as! SKSpriteNode)
+        }
+*/
+    }
+
 }

@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0607B0781B535C6A00FDBFFB /* gun.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0607B0771B535C6A00FDBFFB /* gun.mp3 */; };
+		0607B07A1B535E6A00FDBFFB /* gun_hit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0607B0791B535E6A00FDBFFB /* gun_hit.mp3 */; };
 		06470E381B44970D00C9E7C5 /* cautious-path.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 06470E371B44970D00C9E7C5 /* cautious-path.mp3 */; };
 		06470E3A1B4498ED00C9E7C5 /* throw_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 06470E391B4498ED00C9E7C5 /* throw_sound.mp3 */; };
 		06470E3C1B449C7A00C9E7C5 /* Squish.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 06470E3B1B449C7A00C9E7C5 /* Squish.mp3 */; };
 		06470E3E1B449D5800C9E7C5 /* Pain_Sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 06470E3D1B449D5800C9E7C5 /* Pain_Sound.mp3 */; };
 		06470E421B45F8CA00C9E7C5 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06470E411B45F8CA00C9E7C5 /* GameOverScene.swift */; };
+		06D2430E1B4C70EF00DA73AF /* DINOSAUR.WAV in Resources */ = {isa = PBXBuildFile; fileRef = 06D2430D1B4C70EF00DA73AF /* DINOSAUR.WAV */; };
+		06D243101B4C910000DA73AF /* Glass-break.wav in Resources */ = {isa = PBXBuildFile; fileRef = 06D2430F1B4C910000DA73AF /* Glass-break.wav */; };
+		06D243141B4CA1A800DA73AF /* gorilla_hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 06D243131B4CA1A800DA73AF /* gorilla_hit.wav */; };
 		357164E519DB1E4800ED38A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357164E419DB1E4800ED38A9 /* AppDelegate.swift */; };
 		357164E719DB1E4800ED38A9 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 357164E619DB1E4800ED38A9 /* GameScene.sks */; };
 		357164E919DB1E4800ED38A9 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357164E819DB1E4800ED38A9 /* GameScene.swift */; };
@@ -20,8 +25,6 @@
 		357164F019DB1E4800ED38A9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 357164EF19DB1E4800ED38A9 /* Images.xcassets */; };
 		357164F319DB1E4800ED38A9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 357164F119DB1E4800ED38A9 /* LaunchScreen.xib */; };
 		357164FF19DB1E4800ED38A9 /* SpriteKitSimpleGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357164FE19DB1E4800ED38A9 /* SpriteKitSimpleGameTests.swift */; };
-		3571650C19DB1F5500ED38A9 /* background-music-aac.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3571650919DB1F5500ED38A9 /* background-music-aac.caf */; };
-		3571650D19DB1F5500ED38A9 /* pew-pew-lei.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3571650A19DB1F5500ED38A9 /* pew-pew-lei.caf */; };
 		3571650E19DB1F5500ED38A9 /* sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3571650B19DB1F5500ED38A9 /* sprites.atlas */; };
 /* End PBXBuildFile section */
 
@@ -36,11 +39,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0607B0771B535C6A00FDBFFB /* gun.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gun.mp3; sourceTree = "<group>"; };
+		0607B0791B535E6A00FDBFFB /* gun_hit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gun_hit.mp3; sourceTree = "<group>"; };
 		06470E371B44970D00C9E7C5 /* cautious-path.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "cautious-path.mp3"; sourceTree = "<group>"; };
 		06470E391B4498ED00C9E7C5 /* throw_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = throw_sound.mp3; sourceTree = "<group>"; };
 		06470E3B1B449C7A00C9E7C5 /* Squish.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Squish.mp3; sourceTree = "<group>"; };
 		06470E3D1B449D5800C9E7C5 /* Pain_Sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Pain_Sound.mp3; sourceTree = "<group>"; };
 		06470E411B45F8CA00C9E7C5 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		06D2430D1B4C70EF00DA73AF /* DINOSAUR.WAV */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = DINOSAUR.WAV; sourceTree = "<group>"; };
+		06D2430F1B4C910000DA73AF /* Glass-break.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Glass-break.wav"; sourceTree = "<group>"; };
+		06D243131B4CA1A800DA73AF /* gorilla_hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gorilla_hit.wav; sourceTree = "<group>"; };
 		357164DF19DB1E4800ED38A9 /* SpriteKitSimpleGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpriteKitSimpleGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		357164E319DB1E4800ED38A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		357164E419DB1E4800ED38A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -53,8 +61,6 @@
 		357164F819DB1E4800ED38A9 /* SpriteKitSimpleGameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpriteKitSimpleGameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		357164FD19DB1E4800ED38A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		357164FE19DB1E4800ED38A9 /* SpriteKitSimpleGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteKitSimpleGameTests.swift; sourceTree = "<group>"; };
-		3571650919DB1F5500ED38A9 /* background-music-aac.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "background-music-aac.caf"; sourceTree = "<group>"; };
-		3571650A19DB1F5500ED38A9 /* pew-pew-lei.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "pew-pew-lei.caf"; sourceTree = "<group>"; };
 		3571650B19DB1F5500ED38A9 /* sprites.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = sprites.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -140,12 +146,15 @@
 		3571650819DB1F5500ED38A9 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				06D2430D1B4C70EF00DA73AF /* DINOSAUR.WAV */,
+				0607B0771B535C6A00FDBFFB /* gun.mp3 */,
+				06D243131B4CA1A800DA73AF /* gorilla_hit.wav */,
 				06470E3D1B449D5800C9E7C5 /* Pain_Sound.mp3 */,
 				06470E3B1B449C7A00C9E7C5 /* Squish.mp3 */,
+				06D2430F1B4C910000DA73AF /* Glass-break.wav */,
 				06470E391B4498ED00C9E7C5 /* throw_sound.mp3 */,
+				0607B0791B535E6A00FDBFFB /* gun_hit.mp3 */,
 				06470E371B44970D00C9E7C5 /* cautious-path.mp3 */,
-				3571650919DB1F5500ED38A9 /* background-music-aac.caf */,
-				3571650A19DB1F5500ED38A9 /* pew-pew-lei.caf */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -232,15 +241,18 @@
 			files = (
 				06470E3A1B4498ED00C9E7C5 /* throw_sound.mp3 in Resources */,
 				3571650E19DB1F5500ED38A9 /* sprites.atlas in Resources */,
-				3571650C19DB1F5500ED38A9 /* background-music-aac.caf in Resources */,
 				357164F319DB1E4800ED38A9 /* LaunchScreen.xib in Resources */,
 				357164F019DB1E4800ED38A9 /* Images.xcassets in Resources */,
 				06470E3C1B449C7A00C9E7C5 /* Squish.mp3 in Resources */,
 				357164E719DB1E4800ED38A9 /* GameScene.sks in Resources */,
+				0607B0781B535C6A00FDBFFB /* gun.mp3 in Resources */,
 				357164EE19DB1E4800ED38A9 /* Main.storyboard in Resources */,
-				3571650D19DB1F5500ED38A9 /* pew-pew-lei.caf in Resources */,
+				06D2430E1B4C70EF00DA73AF /* DINOSAUR.WAV in Resources */,
 				06470E3E1B449D5800C9E7C5 /* Pain_Sound.mp3 in Resources */,
+				06D243141B4CA1A800DA73AF /* gorilla_hit.wav in Resources */,
 				06470E381B44970D00C9E7C5 /* cautious-path.mp3 in Resources */,
+				06D243101B4C910000DA73AF /* Glass-break.wav in Resources */,
+				0607B07A1B535E6A00FDBFFB /* gun_hit.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

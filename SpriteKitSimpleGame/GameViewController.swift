@@ -19,7 +19,11 @@ class GameViewController: UIViewController {
     skView.showsNodeCount = true
     skView.ignoresSiblingOrder = true
     scene.scaleMode = .ResizeFill
+    //scene.scaleMode = .AspectFill
     skView.presentScene(scene)
+    
+    // to see physics body
+    skView.showsPhysics = true
   }
   
   override func prefersStatusBarHidden() -> Bool {
