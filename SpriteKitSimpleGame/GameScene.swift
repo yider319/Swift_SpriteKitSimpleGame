@@ -107,6 +107,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     
     override func didMoveToView(view: SKView) {
+        playBackgroundMusic("cautious-path.mp3")
         
         backgroundColor = SKColor.whiteColor()
 
@@ -235,7 +236,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     //
     func addMonster1() {
-        
+        // play crazy sound
+        runAction(SKAction.playSoundFileNamed("crazy_laugh.mp3", waitForCompletion: false))
         // Create Boss Bunny sprite
         let bunny = SKSpriteNode(imageNamed: "Bugs_Bunny")
         bunny.size = CGSize(width: 70, height: 100)
